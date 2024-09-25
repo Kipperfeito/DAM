@@ -1,7 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, Pressable, Image,} from 'react-native';
+import { useState } from 'react';
 
 export default function App() {
+  const [pedido, setPedido] = useState([]);
+
+  const selecionarItem = (item) => {
+    setPedido([...pedido, item]);  // Adiciona o item ao pedido
+    alert(`${item.nome} selecionado`);
+  };
+
+  const encerrarPedido = () => {
+    if (pedido.length === 0) {
+      alert('Nenhum item selecionado');
+    }  else if(pedido.length === 1) {
+      const total = pedido.reduce((acc, item) => acc + item.preco, 0); 
+      alert(`Você selecionou ${pedido.length} item. Valor total: R$ ${total.toFixed(2)}`);
+    }  else {
+      const total = pedido.reduce((acc, item) => acc + item.preco, 0); 
+      alert(`Você selecionou ${pedido.length} itens. Valor total: R$ ${total.toFixed(2)}`);
+    }
+  };
   return (
     <View style={styles.containerPrincipal}>
       <View style={styles.cabecalho}>
@@ -9,34 +28,34 @@ export default function App() {
       </View>
       <View style={styles.container}>
         <View style={styles.view1}>
-          <Pressable style={styles.view1} onPress={() => alert('Selecionado')}>
-            <Image source={require('./assets/Carne.jpeg')} style={styles.imagem}/>
+          <Pressable style={styles.view1} onPress={() => selecionarItem({ nome: 'Carne', preco: 5.00 })}>
+            <Image source={require('./assets/Carne.jpeg')} style={styles.imagem} />
             <Text style={styles.titulos}>Carne</Text>
             <Text style={styles.preco}>R$ 5,00</Text>
           </Pressable>
         </View>
         <View style={styles.view2}>
-          <Pressable style={styles.view2} onPress={() => alert('Selecionado')}>
-            <Image source={require('./assets/Frango.jpg')} style={styles.imagem}/>
+          <Pressable style={styles.view2} onPress={() => selecionarItem({ nome: 'Frango', preco: 5.00 })}>
+            <Image source={require('./assets/Frango.jpg')} style={styles.imagem} />
             <Text style={styles.titulos}>Frango</Text>
             <Text style={styles.preco}>R$ 5,00</Text>
           </Pressable>
         </View>
         <View style={styles.view3}>
-          <Pressable style={styles.view3} onPress={() => alert('Selecionado')}>
-            <Image source={require('./assets/Queijo.jpeg')} style={styles.imagem}/>
+          <Pressable style={styles.view3} onPress={() => selecionarItem({ nome: 'Queijo', preco: 5.00 })}>
+            <Image source={require('./assets/Queijo.jpeg')} style={styles.imagem} />
             <Text style={styles.titulos}>Queijo</Text>
             <Text style={styles.preco}>R$ 5,00</Text>
           </Pressable>
         </View>
         <View style={styles.view4}>
-          <Pressable style={styles.view4} onPress={() => alert('Selecionado')}>
-            <Image source={require('./assets/Romeu.jpeg')} style={styles.imagem}/>
+          <Pressable style={styles.view4} onPress={() => selecionarItem({ nome: 'Romeu e Julieta', preco: 5.00 })}>
+            <Image source={require('./assets/Romeu.jpeg')} style={styles.imagem} />
             <Text style={styles.titulos}>Romeu e Julieta</Text>
             <Text style={styles.preco}>R$ 5,00</Text>
           </Pressable>
         </View>
-        <Button title='Encerrar pedido'/>
+        <Button title='Encerrar pedido' onPress={encerrarPedido}/>
       </View>
     </View>
   );
