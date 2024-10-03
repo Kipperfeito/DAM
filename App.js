@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Button, Pressable, Image,} from 'react-native';
+import * as Speech from 'expo-speech';
 import { useState } from 'react';
 
 export default function App() {
@@ -11,15 +12,21 @@ export default function App() {
 
   const encerrarPedido = () => {
     if (pedido.length === 0) {
-      alert('Nenhum item selecionado');
+       Speech.speak('Nenhum item selecionado', {language: "pt-BR", pitch: 0.8});
     }  
     //Função que soma os preco dos pedidos e usa o length para saber quantos tem
     else if(pedido.length === 1) {
       const total = pedido.reduce((acc, item) => acc + item.preco, 0); 
-      alert(`Você selecionou ${pedido.length} item. Valor total: R$ ${total.toFixed(2)}`); //Caso tenha apenas 1 pedido, fica no singular.
+      //Caso tenha apenas 1 pedido, fica no singular.
+      Speech.speak(`Você selecionou ${pedido.length} pastel de ${pedido[0].nome}. Valor total: R$ ${total.toFixed(2)}`, {language: "pt-BR", pitch: 0.8}); 
     }  else {
       const total = pedido.reduce((acc, item) => acc + item.preco, 0); // Se não, fica no plural
-      alert(`Você selecionou ${pedido.length} itens. Valor total: R$ ${total.toFixed(2)}`);
+      let nomes = "";
+      for (let i = 0; i < pedido.length; i++) {
+        nomes += pedido[i].nome; // Adiciona o nome do item à string
+        nomes += " e ";
+      }
+      Speech.speak(`Você selecionou ${pedido.length} pastéis. ${nomes} Valor total: R$ ${total.toFixed(2)}`, {language: "pt-BR", pitch: 0.8});
     }
   };
   return (
